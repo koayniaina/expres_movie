@@ -8,14 +8,14 @@ router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // Vérification des champs
+    // Verify fields
     if (!username || !email || !password) {
       return res.status(400).json({
         message: "Please fill all the fields",
       });
     }
 
-    // Vérification si l'utilisateur existe déjà
+    // Verification when user exist
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({
@@ -23,14 +23,14 @@ router.post("/register", async (req, res) => {
       });
     }
 
-    // Création de l'utilisateur
+    // Create user
     const user = await User.create({
       username,
       email,
       password,
     });
     const token = generateToken(user._id);
-    // Réponse
+    // Reponse
     res.status(201).json({
       id: user._id,
       username: user.username,

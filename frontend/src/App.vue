@@ -1,9 +1,7 @@
-<script setup>
-
-</script>
-
 <template>
-  App Show pages
+  <div id="app">
+    <router-view />
+  </div>
 </template>
 
 
