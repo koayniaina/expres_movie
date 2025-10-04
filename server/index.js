@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
-// import  Posts from "./models/post.js";
-import postsRouter from './routes/posts.js'
+import postsRouter from './routes/posts.js';
+import authRoutes from './routes/auth.js';
 import { connectmongoDB } from "./config/mongoDB.js";
 
 const app = express();
@@ -12,6 +12,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 app.use("/posts", postsRouter);
+app.use("/users", authRoutes)
 
 app.listen(PORT, () => {
   connectmongoDB();
