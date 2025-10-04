@@ -1,43 +1,42 @@
 <template>
-  <div>
-    <h1>Welcome, {{ user.username }}</h1>
-    <button @click="logout">Logout</button>
+  <div class="p-4 max-w-md mx-auto text-center">
+    <h2 class="text-2xl font-semibold mb-4">Welcome, {{ user?.username }}!</h2>
+
+    <button
+      @click="logout"
+      class="bg-red-600 text-white px-4 py-2 mt-3 rounded"
+    >
+      Logout
+    </button>
   </div>
 </template>
 
-<script>
-import API from "../services/api.js";
-import { useToast } from "vue-toastification";
-import { useRouter } from "vue-router";
+<script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import API from "../services/api.js";
 
-export default {
-  setup() {
-    const user = ref({});
-    const toast = useToast();
-    const router = useRouter();
+const user = ref(null);
+const router = useRouter();
 
-    const fetchUser = async () => {
-      try {
-        const res = await API.get("/me");
-        user.value = res.data;
-      } catch (err) {
-        toast.error("Unauthorized, please login again.");
-        router.push("/login");
-      }
-    };
+onMounted(async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    router.push("/login");
+    return;
+  }
 
-    const logout = () => {
-      localStorage.removeItem("token");
-      toast.success("Logged out successfully!");
-      router.push("/login");
-    };
+  try {
+    const { data } = await API.get("/me");
+    user.value = data;
+  } catch (err) {
+    console.error("Erreur récupération utilisateur:", err);
+    router.push("/login");
+  }
+});
 
-    onMounted(() => {
-      fetchUser();
-    });
-
-    return { user, logout };
-  },
+const logout = () => {
+  localStorage.removeItem("token");
+  router.push("/login");
 };
 </script>

@@ -1,10 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
-import postsRouter from './routes/posts.js';
-import authRoutes from './routes/auth.js';
+import postsRouter from "./routes/posts.js";
+import authRoutes from "./routes/auth.js";
+import cors from "cors";
 import { connectmongoDB } from "./config/mongoDB.js";
 
 const app = express();
+app.use(cors());
 
 app.use(express.json());
 dotenv.config();
@@ -12,7 +14,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 app.use("/posts", postsRouter);
-app.use("/users", authRoutes)
+app.use("/users", authRoutes);
 
 app.listen(PORT, () => {
   connectmongoDB();

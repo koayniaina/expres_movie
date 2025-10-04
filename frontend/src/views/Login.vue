@@ -1,8 +1,9 @@
 <template>
-  <form @submit.prevent="login">
-    <input v-model="email" placeholder="Email" />
-    <input type="password" v-model="password" placeholder="Password" />
-    <button type="submit">Login</button>
+  <form @submit.prevent="login" class="p-4 max-w-sm mx-auto">
+    <h2 class="text-2xl mb-4">Login</h2>
+    <input v-model="email" placeholder="Email" class="border p-2 w-full mb-2" />
+    <input type="password" v-model="password" placeholder="Password" class="border p-2 w-full mb-2" />
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full">Login</button>
   </form>
 </template>
 
@@ -14,16 +15,28 @@ import { ref } from "vue";
 
 export default {
   setup() {
-    const email = ref("");
-    const password = ref("");
     const toast = useToast();
     const router = useRouter();
 
+    // Reactive data
+    const email = ref("");
+    const password = ref("");
+
     const login = async () => {
       try {
-        const res = await API.post("/login", { email: email.value, password: password.value });
+        const res = await API.post("/login", {
+          email: email.value,
+          password: password.value,
+        });
+
+        // Save JWT token and username
         localStorage.setItem("token", res.data.token);
-        toast.success("Logged in successfully!");
+        localStorage.setItem("username", res.data.username);
+
+        // Show success toast
+        toast.success(`Welcome back, ${res.data.username}!`);
+
+        // Redirect to dashboard
         router.push("/dashboard");
       } catch (err) {
         toast.error(err.response?.data?.message || "Login failed");
