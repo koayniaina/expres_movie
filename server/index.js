@@ -1,22 +1,25 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config(); 
+
+import express from "express";
+import cors from "cors";
 import postsRouter from "./routes/posts.js";
 import authRoutes from "./routes/auth.js";
-import cors from "cors";
 import { connectmongoDB } from "./config/mongoDB.js";
 
 const app = express();
-app.use(cors());
-
-app.use(express.json());
-dotenv.config();
-
 const PORT = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(express.json());
+
 
 app.use("/posts", postsRouter);
 app.use("/users", authRoutes);
 
-app.listen(PORT, () => {
-  connectmongoDB();
-  console.log(`This is running on port ${PORT}`);
+// Start server after DB connects
+connectmongoDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
 });
