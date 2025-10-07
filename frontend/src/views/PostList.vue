@@ -1,52 +1,3 @@
-<template>
-  <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2>Post List</h2>
-      <router-link to="/CreatePost" class="btn btn-success">+ New Post</router-link>
-    </div>
-
-    <table class="table table-dark table-striped">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Status</th>
-          <th>Created</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="post in posts" :key="post._id">
-          <td>{{ post.title }}</td>
-          <td>
-            <span
-              class="badge"
-              :class="post.status === 'open' ? 'bg-success' : 'bg-secondary'"
-            >
-              {{ post.status }}
-            </span>
-          </td>
-          <td>{{ new Date(post.createdAt).toLocaleDateString() }}</td>
-          <td>
-            <router-link
-              :to="`/UpdatePost/${post._id}`" 
-              class="btn btn-warning btn-sm me-2"
-            >
-              Edit
-            </router-link>
-            <button class="btn btn-danger btn-sm" @click="remove(post._id)">
-              Delete
-            </button>
-          </td>
-        </tr>
-
-        <tr v-if="posts.length === 0">
-          <td colspan="4" class="text-center">No data found</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</template>
-
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -95,9 +46,84 @@ export default {
   },
 };
 </script>
+<template>
+  <div class="container">
+    <div class="content">
+      <!-- <p>Teck Stack</p> -->
+      <router-link to="/CreatePost">
+        <span class="material-symbols-outlined"> add </span> New
+        Post</router-link
+      >
+    </div>
+
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="post in posts" :key="post._id">
+          <td>{{ post.title }}</td>
+          <td>
+            <span
+              class="badge"
+              :class="post.status === 'open' ? 'bg-success' : 'bg-secondary'"
+            >
+              {{ post.status }}
+            </span>
+          </td>
+          <td>{{ new Date(post.createdAt).toLocaleDateString() }}</td>
+          <td>
+            <router-link
+              :to="`/UpdatePost/${post._id}`"
+              class="btn btn-warning btn-sm me-2"
+            >
+              Edit
+            </router-link>
+            <button class="btn btn-danger btn-sm" @click="remove(post._id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+
+        <tr v-if="posts.length === 0">
+          <td colspan="4" class="text-center">No data found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
 
 <style scoped>
-.container {
-  max-width: 800px;
+
+.container{
+  margin: 0 auto;
+  max-width: 900px;
+  /* text-align: center; */
+  width: 100%;
+}
+
+table {
+  border: 1px solid rgb(236, 236, 236);
+}
+
+.container table thead , tbody{
+  text-align: center;
+}
+
+.content a{
+  background-color: rgb(62, 123, 163);
+  display: flex;
+  border-radius: 4px;
+  padding: .4rem 1rem;
+  align-items: center;
+  color: whitesmoke;
+  width: 100%;
+  max-width: 140px;
+  margin: 1rem 0 1rem;
 }
 </style>

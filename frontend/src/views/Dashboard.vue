@@ -1,20 +1,3 @@
-<template>
-  <div class="p-4 max-w-md mx-auto text-center">
-    <h2 class="text-2xl font-semibold mb-4">
-      Welcome, {{ user ? user.username : "Loading..." }}!
-    </h2>
-
-    <button
-      @click="logout"
-      class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 mt-3 rounded"
-    >
-      Logout
-    </button>
-  </div>
-
-  <PostList class="mt-6" />
-</template>
-
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
@@ -53,3 +36,63 @@ const logout = () => {
   router.push("/login");
 };
 </script>
+<template>
+  <div class="dashboard">
+    <div class="logo">
+      <div class="logo-right">
+        <img src="../assets/ticket.png" alt="Logo" />
+        <p>Ticket</p>
+      </div>
+    </div>
+    <div class="user-info">
+      <p>Welcome, {{ user ? user.username : "Loading..." }}!</p>
+      <img src="../assets/user.png" alt="" />
+      <!-- <span @click="logout" class="material-symbols-outlined"> logout </span> -->
+    </div>
+  </div>
+  <div class="post">
+    <PostList />
+  </div>
+</template>
+
+<style scoped>
+.dashboard {
+  padding: 0.3rem 2rem;
+  display: flex;
+  align-items: center;
+  background-color: rgba(218, 218, 218, 0.637);
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.logo-right {
+  display: block;
+  text-align: center;
+
+  img {
+    padding-bottom: 0.6rem;
+  }
+
+  p {
+    margin-top: -0.5rem;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 0.8rem;
+  }
+}
+.user-info {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  p {
+    color: rgb(29, 29, 29);
+    font-weight: 500;
+  }
+}
+</style>
